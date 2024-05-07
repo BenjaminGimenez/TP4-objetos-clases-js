@@ -21,17 +21,41 @@ Crea un menú con opciones que serán seleccionadas por el usuario usando un pro
 
 */
 
-
 class Contacto {
-    constructor(nombre, telefono){
-        this.nombre = nombre;
-        this.telefono = telefono;
+    constructor(nombre, telefono) {
+      this.nombre = nombre;
+      this.telefono = telefono;
     }
-}
-
-class agenda {
-    constructor(tamañoMaximo = 10){
-        this.tamañoMaximo = tamañoMaximo;
-        this.Contacto = [];
+  }
+  
+  class Agenda {
+    constructor(tamañoMaximo = 10) {
+      this.tamañoMaximo = tamañoMaximo;
+      this.Contactos = []; // Idealmente debería usar camelCase: `this.contactos`
     }
-}
+  
+    añadirContacto(contacto) {
+      if (this.Contactos.length < this.tamañoMaximo) {
+        this.Contactos.push(contacto);
+      } else {
+        console.log("Agenda llena, no se puede añadir más contactos.");
+      }
+    }
+  
+    listarContactos() {
+      console.log("Listado de contactos:");
+      let mensaje = "";
+      this.Contactos.forEach((contacto, index) => {
+        mensaje += `${index + 1}: ${contacto.nombre} - ${contacto.telefono}\n`; // Corregido '/n' por '\n'
+      });
+      console.log(mensaje);
+    }
+  }
+  
+  const persona = new Contacto("Juan", 123456); // Cambié 'juan' por 'Juan' para mantener la consistencia en la capitalización
+  
+  const agenda = new Agenda(15);
+  
+  agenda.añadirContacto(persona);
+  
+  agenda.listarContactos();
