@@ -35,27 +35,74 @@ class Contacto {
     }
   
     añadirContacto(contacto) {
-      if (this.Contactos.length < this.tamañoMaximo) {
-        this.Contactos.push(contacto);
-      } else {
-        console.log("Agenda llena, no se puede añadir más contactos.");
+      if(this.agendaLlena()){
+        return;
       }
+        this.Contactos.push(contacto);
     }
   
     listarContactos() {
       console.log("Listado de contactos:");
       let mensaje = "";
       this.Contactos.forEach((contacto, index) => {
-        mensaje += `${index + 1}: ${contacto.nombre} - ${contacto.telefono}\n`; // Corregido '/n' por '\n'
+        mensaje += `${index + 1}: ${contacto.nombre} - ${contacto.telefono}\n`;
       });
       console.log(mensaje);
     }
+
+    //devuelve el contaco si es que lo encuentra
+    buscarContacto(nombre, mostrarNumero = true){
+      const contactoEncontrado = this.Contactos.find((contactoActual)=>{
+        return contactoActual.nombre.trim().toLowerCase() === nombre.trim().toLowerCase();
+      });
+      if (mostrarNumero) {
+        if (contactoEncontrado) {
+          console.log(contactoEncontrado.telefono)
+        }else{
+          console.log('No se encontro el contacto')
+        }
+  
+      }
+      
+      return contactoEncontrado;
+    }
+
+    //devuelve si existe o no
+    existeContacto(nombre){
+      const contactoEncontrado = this.buscarContacto(nombre, false);
+      return Boolean(contactoEncontrado); //devuelve true o false.
+    }
+
+    agendaLlena(){
+      if(this.Contactos.length >= this.tamañoMaximo){
+        console.log('capacidad maxima, no se pueden agregar mas contactos');
+      }else{
+        console.log('aun quedan espacios en la agenda')
+      }
+    }
+
+    huecosLibres(){
+
+      const longitudActual = this.Contactos.length;
+      console.log(`quendan ${this.tamañoMaximo - longitudActual} espacios libres`)
+      return this.tamañoMaximo - longitudActual;
+
+    }
   }
   
-  const persona = new Contacto("Juan", 123456); // Cambié 'juan' por 'Juan' para mantener la consistencia en la capitalización
+  const persona1 = new Contacto("Juan", 123456);
+  const persona2 = new Contacto("Maria", 789101); 
   
-  const agenda = new Agenda(15);
+  const agenda = new Agenda(10);
   
-  agenda.añadirContacto(persona);
+  agenda.añadirContacto(persona1);
+  agenda.añadirContacto(persona2);
   
   agenda.listarContactos();
+
+  agenda.buscarContacto('juan')
+
+  const existe = agenda.existeContacto('juan');
+  console.log('Existe ' ,existe)
+
+  agenda.huecosLibres();
